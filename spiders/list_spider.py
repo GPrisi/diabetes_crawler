@@ -21,8 +21,7 @@ class ListSpider(feapder.Spider):
         yield feapder.Request("https://diabetestalk.net")
 
     def download_midware(self, request):
-        # 随机UA
-        request.headers = {'User-Agent': str(UserAgent(path="./fakeuseragent.json").random)}
+        request.headers = {'User-Agent': str(UserAgent(path="./fakeuseragent.json").random)}    # 随机UA
         return request
 
     def parse(self, request, response):
@@ -30,17 +29,16 @@ class ListSpider(feapder.Spider):
             url = a_tag.get('href')
             #title = a_tag.get('title')
             
-            # 分开文章页面和类别页面 :字符串“https://diabetestalk.net/”后面是否还存在符号“/”
-            url_tail = re.findall('(?<=https://diabetestalk.net/).*$', url)[0]
-            if '/' in url_tail:  # 文章页面 #可以删掉
+            url_tail = re.findall('(?<=https://diabetestalk.net/).*$', url)[0]  # 区分开文章页面和类别页面 #字符串后面是否还存在“/”
+            if '/' in url_tail:     #文章页面 #可以删掉
                 blog_item = dbt_talk_blog_item.DbtTalkBlogItem()
                 blog_item.url = url
-                yield blog_item  # 直接返回，框架实现批量入库
-            else :  # 类别页面 
+                yield blog_item     #直接返回，框架实现批量入库
+            else :                  #类别页面 
                 theme_item = blog_theme_item.BlogThemeItem()
                 theme_item.url = url            
                 theme_item.name = url_tail
-                yield theme_item  # 自动批量入库
+                yield theme_item    #自动批量入库
 
             
 

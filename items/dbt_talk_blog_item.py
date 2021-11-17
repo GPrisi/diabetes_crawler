@@ -20,8 +20,6 @@ class DbtTalkBlogItem(Item):
         # self.id = None
         self.url = ""
         self.title = ""
-        # self.title_ch = ""
-        # self.theme_id = NULL
     
     def pre_to_db(self):
         if self.title :
